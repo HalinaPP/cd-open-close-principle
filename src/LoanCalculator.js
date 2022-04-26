@@ -1,35 +1,21 @@
-const IncomeMultiplier = require('./IncomeMultiplier');
-
 module.exports = class LoanCalculator {
-    getStudentLoan(age, income) {
-        let loan = 100;
+  constructor() {
+    this._loanMap = new Map();
+  }
 
-        if (age >= 21) {
-            loan += 150;
-        }
+  get loanMap() {
+    return this._loanMap;
+  }
 
-        return IncomeMultiplier.multiply(loan, income);
+  set loanMap(value) {
+    this._loanMap = value;
+  }
+
+  getLoan(loanType, age, income) {
+    if (this._loanMap.has(loanType)) {
+      return this.loanMap.get(loanType).getLoan(age, income);
+    } else {
+      throw new Error("This loan type doesn't exist");
     }
-
-    getCarLoan(age, income) {
-        let loan = 2000;
-
-        if (age > 50) {
-            loan += 1500;
-        } else if (age > 30) {
-            loan += 1000;
-        }
-
-        return IncomeMultiplier.multiply(loan, income);
-    }
-
-    getHouseLoan(age, income) {
-        let loan = 100000;
-
-        if (age > 30 && income > loan / 2) {
-            loan *= 2;
-        }
-
-        return IncomeMultiplier.multiply(loan, income);
-    }
-}
+  }
+};
