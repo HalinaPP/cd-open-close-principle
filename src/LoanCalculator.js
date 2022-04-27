@@ -12,10 +12,18 @@ module.exports = class LoanCalculator {
   }
 
   getLoan(loanType, age, income) {
-    if (this._loanMap.has(loanType)) {
-      return this.loanMap.get(loanType).getLoan(age, income);
-    } else {
+    this.validateLoan(loanType);
+    
+    return this.loanMap.get(loanType).getLoan(age, income);
+  }
+
+  validateLoan(loanType){
+    if (this.isLoanHasNotType(loanType)) {
       throw new Error("This loan type doesn't exist");
     }
+  }
+
+  isLoanHasNotType(loanType){
+    return !this._loanMap.has(loanType);
   }
 };
